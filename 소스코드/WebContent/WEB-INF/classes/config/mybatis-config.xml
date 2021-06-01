@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<!-- 현준. -->
+		<typeAlias type="com.spw.general.vo.GeneralVO" alias="gvo"/>
+		<!-- 하영. -->
+		<typeAlias type="com.spw.auction.vo.AuctionVO" alias="auvo" />
+		<typeAlias type="com.spw.bid.vo.BidVO" alias="bivo" />
+		<typeAlias type="com.spw.notice.vo.NoticeVO" alias="novo" />
+		<!-- 정규. -->
+ 		<typeAlias type="com.spw.reg.vo.RegVO" alias="regvo"/>
+		<typeAlias type="com.spw.category.vo.CategoryVO" alias="categoryvo"/>
+		<typeAlias type="com.spw.comment.vo.CommentVO" alias="commentvo"/>
+		<typeAlias type="com.spw.general.vo.GeneralCountVO" alias="generalcountvo"/> 	
+		<!-- 주호. -->
+		<typeAlias type="com.spw.member.vo.MemberVO" alias="memberVO"/>
+		<typeAlias type="com.spw.member.vo.ChartVO" alias="chartVO"/>
+		<!-- 효제. -->
+ 		<typeAlias type="com.spw.deal.vo.DealVO" alias="dealVO"/>
+		<typeAlias type="com.spw.mypage.vo.MyPickVO" alias="mypickVO"/>
+	</typeAliases>
+</configuration>

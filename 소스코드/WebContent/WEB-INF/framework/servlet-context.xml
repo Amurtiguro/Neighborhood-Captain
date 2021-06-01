@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context 
+						http://www.springframework.org/schema/context/spring-context.xsd
+						http://www.springframework.org/schema/tx 
+						http://www.springframework.org/schema/tx/spring-tx.xsd
+						http://www.springframework.org/schema/task 
+						http://www.springframework.org/schema/task/sprint-task.xsd">
+	<!-- 데이터베이스 연결. -->
+	
+	<!-- DataSource(데이타 소스). 
+		: jndi
+		: jdbc/db-sajapanda
+		TOMCAT/context.xml
+		<Resource 엘리먼트에 있는 name="jdbc/db-sajapanda"으로 Data Source 불러오기.
+		
+		NDI(Java Namming Directory Service) namespace
+		java:comp/env/ : jndi에서 lookup할 때 사용하는 빈의 가상 디렉토리 공간으로 
+		                                  빈이 있는 기본 사가상 디렉토리 
+		                 resource를 찾을때 리소스 이름을 lookup 하는 접두사 
+		java/db-sajapanda : datasource 이름 
+	-->
+	<!-- ojdbc 라이브러리 추가.  -->
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/jdbc/Oracle11g"/>
+	</bean>
+	
+	<!-- Mybatis setting
+		: classpath
+		Mybatis 쿼리문을 찾기 
+		classpath 는 context/WEB-INF/classes 경로를 의미함 
+		Mybatis 설정파일은 context/WEB-INF/classes 에 두라는 의미 
+		classpath:mybatis : context/WEB-INF/classes/mybatis  
+		query/*.xml : query 디렉토리에 있는 모들 sql  쿼리 xml 문서 	
+	 -->
+	 <!-- mybatis랑 mybatis-spring 라이브러리 추가. -->
+	 <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	 	<property name="dataSource" ref="dataSource"/>
+	 	<property name="configLocation" value="classpath:config/mybatis-config.xml"/>
+	 	<property name="mapperLocations" value="classpath:query/*.xml" />
+	 </bean>
+	 
+	 <!-- tx manager -->
+	 <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	 	<property name="dataSource" ref="dataSource"/>
+	 </bean>
+	 
+	 <!-- mapper scan -->
+	 <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	 	<property name="basePackage"><value>com.spw.**.dao</value></property>
+	 </bean>
+</beans>

@@ -1,0 +1,519 @@
+<!DOCTYPE HTML>
+<html>
+<meta charset="UTF-8">
+<head>
+<title>Layout</title>
+<!-- css파일 위치 확정되면 변경 -->
+<link rel="stylesheet" href="mainstyle.css">
+</head>
+<body>
+<!-- 상단바와 내용 -->
+<div id="sitearea">
+	<!-- 상단바 -->
+	<header id="topbar">
+		<div class="wrapper">
+			<!-- 상단바 로고영역(로고, 검색) -->
+			<div id="logoarea">
+				<!-- 로고 -->
+				<div id="toplogo">
+					<a href="#임시">
+						<!-- 로고이미지 위치 확정되면 변경 -->
+						<img src="logo.png" id="sitelogo">
+					</a>
+				</div>
+				<!-- 검색바 -->
+				<div id="searchbar">
+					<form>
+						<!-- 드롭다운 -->
+						<select>
+							<option>사자</option>
+							<option>판다</option>
+							<option>경매</option>
+						</select>
+						<!-- 텍스트필드 -->
+						<div id="searchtext">
+							<input type="text">
+						</div>
+						<!-- 검색버튼 -->
+						<input type="submit" value="검색" id="searchbtn">
+					</form>
+				</div>
+			</div>
+			<div id="btnarea">
+					<a href="#임시" class="sitebtn">로그인</a>
+					<a href="#임시" class="sitebtn">회원가입</a>
+					<a href="#임시" class="sitebtn">글쓰기</a>
+			</div>
+		</div>
+		<!-- 메뉴 -->
+		<div id="naviarea">
+			<ul class="wrapper">
+				<!-- 메뉴버튼들 -->
+				<li>
+					<a href="#임시">
+						<div class="nav_btn">
+							사자
+						</div>
+					</a>
+				</li>
+				<li>
+					<a href="#임시">
+						<div class="nav_btn">
+							판다
+						</div>
+					</a>
+				</li>
+				<li>
+					<a href="#임시">
+						<div class="nav_btn">
+							동네
+						</div>
+					</a>
+				</li>
+				<li>
+					<a href="#임시">
+						<div class="nav_btn">
+							경매
+						</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</header>
+	<!-- 내용 -->
+	<div id="sitecontent">
+		<div class="wrapper">
+			<!-- 상품리스트(그리드) -->
+			<div class="list_contents">
+				<div class="list_top">
+
+					<h2 class="list_title">동네별 조회</h2>
+
+					<!-- 조회된 상품수 카운터 -->
+					<div class="list_count">
+						조회된 상품 수 : <span>127</span>개
+					</div>
+
+					<!-- 카테고리 -->
+					<div class="categoryList">
+						<ul>
+							<li class="cglistRow">
+								<a href="#임시">전체</a>
+							</li>
+							<li class="cglist">
+								<a href="#임시">패션잡화</a>
+							</li>
+							<li class="cglist">
+								<a href="#임시">여성의류</a>
+							</li>
+							<li class="cglist">
+								<a href="#임시">남성의류</a>
+							</li>
+							<li class="cglist">
+								<span>디지털/가전</span>
+							</li>
+							<li class="cglist">
+								<a href="#임시">도서/티켓/취미/애완</a>
+							</li>
+							<li class="cglist">
+								<a href="#임시">생활/문구/가구/식품</a>
+							</li>
+							<li class="cglist">
+								<a href="#임시">유아동/출산</a>
+							</li>
+							<li class="cglist">
+								<a href="#임시">스포츠/레저</a>
+							</li>
+							<li class="cglist">
+								<a href="#임시">뷰티/미용</a>
+							</li>
+							<li class="cglist">
+								<a href="#임시">기타</a>
+							</li>
+						</ul>
+					</div>
+					<div class="reg_find">
+						<div id="regInfo" class="reg_info">
+							<span>선택한 지역 :</span>
+							<span class="reg_name">서울특별시 금천구 가산동</span>
+							<input type="button" value="변경" id="btnRegChange" class="sitebtn">
+						</div>
+						<div id="regSelect" class="reg_select">
+							<select id="regCitPro" name="regCitPro" class="siteselect">
+								<option value="SEL">시/도</option>
+							</select>
+							<select id="regCiCoDi" name="regCiCoDi" class="siteselect">
+								<option value="SEL">시/군/구</option>
+							</select>
+							<select id="regToToNe" name="regToToNe" class="siteselect">
+								<option value="SEL">읍/면/동</option>
+							</select>
+							<input type="button" value="조회" id="btnRegSearch" class="sitebtn">
+							<input type="button" value="취소" id="btnRegChangeCancel" class="sitebtn">
+						</div>
+						<div class="reg_area">
+							<a href="#임시" class="sitebtn">지도로 보기</a>
+						</div>
+						<!-- <div class="search_by_date search_popup" id="searchByDate"> -->
+						<div class="search_by_date" id="searchByDate">
+							날짜입력
+							<input type="text" id="startime" class="sitetxt" size="15">
+							~
+							<input type="text" id="endTime" class="sitetxt" size="15">
+							<input type="button" value="조회" id="btnSerachDate" class="sitebtn">
+							<input type="button" value="취소" id="btnSerachDateCancel" class="sitebtn">
+						</div>
+						<script type="text/javascript" src="/spw/js/reglist.js"></script>
+						<script>
+							$(document).ready(function(){
+								// 드롭박스 객체
+								var $selCitPro = $("#regSelect #regCitPro");
+								var $selCiCoDi = $("#regSelect #regCiCoDi");
+								var $selToToNe = $("#regSelect #regToToNe");
+								//var $selVillage = $("#regVillage");
+
+								// 시/도 목록 가져와서 드롭박스에 출력하기
+								setSelectList($selCitPro, null, "CP");
+
+								// 드롭박스에 이벤트 할당하기
+								// 시/도 -> 시/군/구
+								$selCitPro.change(function(){
+									console.log("[시/도 change]");
+									setSelectList($selCiCoDi, $selCitPro, "CCD");
+								});
+
+								// 시/군/구 -> 읍/면/동
+								$selCiCoDi.change(function(){
+									console.log("[시/군/구 change]");
+									setSelectList($selToToNe, $selCiCoDi, "TTN");
+								});
+
+								$("#btnRegSearch").click(function(){
+									var totoneVal = $selToToNe.val();
+									if(totoneVal != null && totoneVal != "" && totoneVal != "SEL"){
+										$("#gregcodeT").val(totoneVal);
+										$("#formQstr").submit();
+									}else{
+										alert("지역(읍/면/동)을 설정하세요");
+									}
+								});
+
+								$("#btnRegChange").click(function(){
+									$("#regInfo").hide();
+									$("#regSelect").show();
+								});
+
+								$("#btnRegChangeCancel").click(function(){
+									$("#regSelect").hide();
+									$("#regInfo").show();
+								});
+
+								$("#regInfo").show();
+								$("#regSelect").hide();
+
+							});
+						</script>
+					</div>
+				</div>
+				<div class="list_grid">
+					<ul>
+						<li class="grid_item">
+							<a href="#임시">
+								<div class="grid_item_box">
+									<div class="grid_img">
+										<div class="grid_img_label label_saja">
+											사자
+										</div>
+										<img src="imgplaceholder.png">
+									</div>
+									<div class="grid_label">
+										<h3 class="grid_title">
+											제목
+										</h3>
+										<p class="grid_balance">
+											<span>1,000,000</span>원
+										</p>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li class="grid_item">
+							<a href="#임시">
+								<div class="grid_item_box">
+									<div class="grid_img">
+										<div class="grid_img_label label_panda">
+											판다
+										</div>
+										<img src="imgplaceholder.png">
+									</div>
+									<div class="grid_label">
+										<h3 class="grid_title">
+											제목
+										</h3>
+										<p class="grid_balance">
+											<span>1,000,000</span>원
+										</p>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li class="grid_item">
+							<a href="#임시">
+								<div class="grid_item_box">
+									<div class="grid_img">
+										<img src="imgplaceholder.png">
+									</div>
+									<div class="grid_label">
+										<h3 class="grid_title">
+											제목
+										</h3>
+										<p class="grid_balance">
+											<span>1,000,000</span>원
+										</p>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li class="grid_item">
+							<a href="#임시">
+								<div class="grid_item_box">
+									<div class="grid_img">
+										<img src="imgplaceholder.png">
+									</div>
+									<div class="grid_label">
+										<h3 class="grid_title">
+											제목
+										</h3>
+										<p class="grid_balance">
+											<span>1,000,000</span>원
+										</p>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li class="grid_item">
+							<a href="#임시">
+								<div class="grid_item_box">
+									<div class="grid_img">
+										<img src="imgplaceholder.png">
+									</div>
+									<div class="grid_label">
+										<h3 class="grid_title">
+											제목
+										</h3>
+										<p class="grid_balance">
+											<span>1,000,000</span>원
+										</p>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li class="grid_item">
+							<a href="#임시">
+								<div class="grid_item_box">
+									<div class="grid_img">
+										<img src="imgplaceholder.png">
+									</div>
+									<div class="grid_label">
+										<h3 class="grid_title">
+											제목
+										</h3>
+										<p class="grid_balance">
+											<span>1,000,000</span>원
+										</p>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li class="grid_item">
+							<a href="#임시">
+								<div class="grid_item_box">
+									<div class="grid_img">
+										<img src="imgplaceholder.png">
+									</div>
+									<div class="grid_label">
+										<h3 class="grid_title">
+											제목
+										</h3>
+										<p class="grid_balance">
+											<span>1,000,000</span>원
+										</p>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li class="grid_item">
+							<a href="#임시">
+								<div class="grid_item_box">
+									<div class="grid_img">
+										<img src="imgplaceholder.png">
+									</div>
+									<div class="grid_label">
+										<h3 class="grid_title">
+											제목
+										</h3>
+										<p class="grid_balance">
+											<span>1,000,000</span>원
+										</p>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li class="grid_item">
+							<a href="#임시">
+								<div class="grid_item_box">
+									<div class="grid_img">
+										<img src="imgplaceholder.png">
+									</div>
+									<div class="grid_label">
+										<h3 class="grid_title">
+											제목
+										</h3>
+										<p class="grid_balance">
+											<span>1,000,000</span>원
+										</p>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li class="grid_item">
+							<a href="#임시">
+								<div class="grid_item_box">
+									<div class="grid_img">
+										<img src="imgplaceholder.png">
+									</div>
+									<div class="grid_label">
+										<h3 class="grid_title">
+											제목
+										</h3>
+										<p class="grid_balance">
+											<span>1,000,000</span>원
+										</p>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li class="grid_item">
+							<a href="#임시">
+								<div class="grid_item_box">
+									<div class="grid_img">
+										<img src="imgplaceholder.png">
+									</div>
+									<div class="grid_label">
+										<h3 class="grid_title">
+											제목
+										</h3>
+										<p class="grid_balance">
+											<span>1,000,000</span>원
+										</p>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li class="grid_item">
+							<a href="#임시">
+								<div class="grid_item_box">
+									<div class="grid_img">
+										<img src="imgplaceholder.png">
+									</div>
+									<div class="grid_label">
+										<h3 class="grid_title">
+											제목
+										</h3>
+										<p class="grid_balance">
+											<span>1,000,000</span>원
+										</p>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li class="grid_item">
+							<a href="#임시">
+								<div class="grid_item_box">
+									<div class="grid_img">
+										<img src="imgplaceholder.png">
+									</div>
+									<div class="grid_label">
+										<h3 class="grid_title">
+											제목
+										</h3>
+										<p class="grid_balance">
+											<span>1,000,000</span>원
+										</p>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li class="grid_item">
+							<a href="#임시">
+								<div class="grid_item_box">
+									<div class="grid_img">
+										<img src="imgplaceholder.png">
+									</div>
+									<div class="grid_label">
+										<h3 class="grid_title">
+											제목
+										</h3>
+										<p class="grid_balance">
+											<span>1,000,000</span>원
+										</p>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li class="grid_item">
+							<a href="#임시">
+								<div class="grid_item_box">
+									<div class="grid_img">
+										<img src="imgplaceholder.png">
+									</div>
+									<div class="grid_label">
+										<h3 class="grid_title">
+											제목
+										</h3>
+										<p class="grid_balance">
+											<span>1,000,000</span>원
+										</p>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li class="grid_item">
+							<a href="#임시">
+								<div class="grid_item_box">
+									<div class="grid_img">
+										<img src="imgplaceholder.png">
+									</div>
+									<div class="grid_label">
+										<h3 class="grid_title">
+											제목
+										</h3>
+										<p class="grid_balance">
+											<span>1,000,000</span>원
+										</p>
+									</div>
+								</div>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="list_paging"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 하단바 -->
+<footer id="footerarea">
+	<div class="wrapper">
+		<div>
+			[하단바]
+			<br>아이콘 제작자 :
+			<a href="http://www.freepik.com/" title="Freepik">Freepik</a>
+			from
+			<a href="https://www.flaticon.com/kr/" title="Flaticon"> www.flaticon.com</a>
+		</div>
+	</div>
+</footer>
+</body>
+</html>

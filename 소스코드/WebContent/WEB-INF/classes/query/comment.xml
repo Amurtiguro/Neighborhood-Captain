@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spw.comment.dao.CommentDao">
+	<resultMap type="commentvo" id="commentVOAllList">
+		<result property="cnum" column="CNUM" />
+		<result property="ccontents" column="CCONTENTS" />
+		<result property="cpnum" column="CPNUM" />
+		<result property="cgroupnum" column="CGROUPNUM" />
+		<result property="ctargetnum" column="CTARGETNUM" />
+		<result property="cdelyn" column="CDELYN" />
+		<result property="cindate" column="CINDATE" />
+		<result property="mnum" column="MNUM" />
+		<result property="mname" column="MNAME" />
+		<result property="mid" column="MID" />
+		<result property="groupsize" column="GROUPSIZE" />
+		<result property="pagesize" column="PAGESIZE" />
+		<result property="curpage" column="CURPAGE" />
+		<result property="totalcount" column="TOTALCOUNT" />
+	</resultMap>
+
+	<resultMap type="commentvo" id="commentVOList">
+		<result property="cnum" column="CNUM" />
+		<result property="ccontents" column="CCONTENTS" />
+		<result property="cpnum" column="CPNUM" />
+		<result property="cgroupnum" column="CGROUPNUM" />
+		<result property="ctargetnum" column="CTARGETNUM" />
+		<result property="cdelyn" column="CDELYN" />
+		<result property="cindate" column="CINDATE" />
+		<result property="mnum" column="MNUM" />
+		<result property="mname" column="MNAME" />
+		<result property="mid" column="MID" />
+	</resultMap>
+
+	<resultMap type="commentvo" id="commentVOSelect">
+		<result property="cnum" column="CNUM" />
+		<result property="ccontents" column="CCONTENTS" />
+		<result property="cpnum" column="CPNUM" />
+		<result property="cgroupnum" column="CGROUPNUM" />
+		<result property="ctargetnum" column="CTARGETNUM" />
+		<result property="cdelyn" column="CDELYN" />
+		<result property="cindate" column="CINDATE" />
+		<result property="mnum" column="MNUM" />
+	</resultMap>
+
+	<resultMap type="commentvo" id="commentVORootInsert">
+		<result property="cnum" column="CNUM" />
+		<result property="ccontents" column="CCONTENTS" />
+		<result property="cpnum" column="CPNUM" />
+		<result property="mnum" column="MNUM" />
+	</resultMap>
+
+	<resultMap type="commentvo" id="commentVOReInsert">
+		<result property="cnum" column="CNUM" />
+		<result property="cgroupnum" column="CGROUPNUM" />
+		<result property="ctargetnum" column="CTARGETNUM" />
+		<result property="ccontents" column="CCONTENTS" />
+		<result property="cpnum" column="CPNUM" />
+		<result property="mnum" column="MNUM" />
+	</resultMap>
+
+	<resultMap type="commentvo" id="commentVOSelectNoti">
+		<result property="cnum" column="CNUM" />
+		<result property="cpnum" column="CPNUM" />
+		<result property="pmnum" column="PMNUM" />
+		<result property="cmnum" column="CMNUM" />
+	</resultMap>
+
+	<!-- 모든 댓글목록을 가져오는 쿼리 -->
+	<select id="commentAllList" parameterType="commentvo" resultMap="commentVOAllList">
+		SELECT * FROM (
+		SELECT
+		        C.CNUM                                        AS CNUM         -- 댓글 번호
+		       ,C.CCONTENTS                                   AS CCONTENTS    -- 댓글 내용
+		       ,C.CPNUM                                       AS CPNUM        -- 상품 번호
+		       ,C.CGROUPNUM                                   AS CGROUPNUM    -- 그룹 번호
+		       ,C.CTARGETNUM                                  AS CTARGETNUM   -- 타겟 번호
+		       ,C.CDELYN                                      AS CDELYN       -- 삭제여부
+		       ,TO_CHAR(C.CINDATE, 'YYYY/MM/DD')              AS CINDATE      -- 입력일
+		       ,C.MNUM                                        AS MNUM         -- 회원 번호
+		       ,M.MNAME                                       AS MNAME        -- 회원 이름
+		       ,M.MID                                         AS MID          -- 회원 ID
+		       ,#{groupsize, jdbcType=VARCHAR}                AS GROUPSIZE    -- 그룹 사이즈
+		       ,#{pagesize, jdbcType=VARCHAR}                 AS PAGESIZE     -- 페이지 사이즈
+		       ,CEIL(ROW_NUMBER() OVER(ORDER BY CNUM DESC)/#{pagesize, jdbcType=VARCHAR}) AS CURPAGE      -- 페이지 번호
+		       ,COUNT(C.CNUM) OVER()                          AS TOTALCOUNT   -- 총데이터 수
+		FROM    COMMENT_LIST C, MEMBER_LIST M
+		WHERE   M.MNUM  = C.MNUM
+		AND     C.CDELYN = 'N'
+		<if test="ccontents != null and ccontents != ''">
+		<![CDATA[
+		AND     C.CCONTENTS LIKE '%' || #{ccontents, jdbcType=VARCHAR} || '%'
+		]]>
+		</if>
+		ORDER BY CNUM DESC
+		) CL
+		WHERE CL.CURPAGE = #{curpage, jdbcType=VARCHAR}
+	</select>
+
+	<!-- (상품번호로)선택한 상품의 댓글목록을 가져오는 쿼리 -->
+	<select id="commentList" parameterType="commentvo" resultMap="commentVOList">
+		SELECT
+		        C.CNUM                                              AS CNUM         -- 댓글 번호
+		       ,DECODE(C.CDELYN, 'N', C.CCONTENTS)                  AS CCONTENTS    -- 댓글 내용
+		       ,C.CPNUM                                             AS CPNUM        -- 상품 번호
+		       ,C.CGROUPNUM                                         AS CGROUPNUM    -- 그룹 번호
+		       ,C.CTARGETNUM                                        AS CTARGETNUM   -- 타겟 번호
+		       ,C.CDELYN                                            AS CDELYN       -- 삭제여부
+		       ,TO_CHAR(C.CINDATE, 'YYYY/MM/DD')                    AS CINDATE      -- 입력일
+		       ,DECODE(C.CDELYN, 'N', C.MNUM)                       AS MNUM         -- 회원 번호
+		       ,DECODE(C.CDELYN, 'N', C.MNAME)                      AS MNAME        -- 회원 이름
+		       ,DECODE(C.CDELYN, 'N', C.MID)                        AS MID          -- 회원 ID
+		       ,DECODE(C.CGROUPNUM, C.CTARGETNUM, null, CC.MNAME)   AS TARNAME      -- 타겟 회원 이름
+		FROM    (
+		SELECT  
+		        CL.CNUM         AS CNUM
+		       ,CL.CCONTENTS    AS CCONTENTS
+		       ,CL.CPNUM        AS CPNUM
+		       ,CL.CGROUPNUM    AS CGROUPNUM
+		       ,CL.CTARGETNUM   AS CTARGETNUM
+		       ,CL.CDELYN       AS CDELYN
+		       ,CL.CINDATE      AS CINDATE
+		       ,CL.MNUM         AS MNUM
+		       ,M.MNAME         AS MNAME
+		       ,M.MID           AS MID
+		FROM    COMMENT_LIST CL, MEMBER_LIST M
+		WHERE   CL.CPNUM = #{cpnum, jdbcType=VARCHAR}
+		AND     M.MNUM = CL.MNUM
+		) C,(
+		SELECT  
+		        CLI.CNUM         AS CNUM
+		       ,ME.MNAME         AS MNAME
+		FROM    COMMENT_LIST CLI, MEMBER_LIST ME
+		WHERE   ME.MNUM = CLI.MNUM
+		) CC
+		WHERE C.CTARGETNUM = CC.CNUM(+)
+		ORDER BY
+		        C.CGROUPNUM ASC
+		       ,C.CNUM ASC
+	</select>
+
+	<!-- (댓글 번호로)선택한 댓글을 가져오는 쿼리 -->
+	<select id="commentSelect" parameterType="commentvo" resultMap="commentVOSelect">
+		SELECT  
+		        C.CNUM                             AS CNUM         -- 댓글 번호
+		       ,C.CCONTENTS                        AS CCONTENTS    -- 댓글 내용
+		       ,C.CPNUM                            AS CPNUM        -- 상품 번호
+		       ,C.CGROUPNUM                        AS CGROUPNUM    -- 그룹 번호
+		       ,C.CTARGETNUM                       AS CTARGETNUM   -- 타겟 번호
+		       ,C.CDELYN                           AS CDELYN       -- 삭제여부
+		       ,TO_CHAR(C.CINDATE, 'YYYY/MM/DD')   AS CINDATE      -- 입력일
+		       ,C.MNUM                             AS MNUM         -- 회원 번호
+		FROM    COMMENT_LIST C
+		WHERE   CDELYN = 'N'
+		AND     CNUM   = #{cnum, jdbcType=VARCHAR}
+	</select>
+
+	<!-- 댓글을 입력하는 쿼리(최상위 댓글) -->
+	<insert id="commentRootInsert" parameterType="commentvo">
+		<selectKey keyProperty="cnum" resultType="String" order="BEFORE">
+			SELECT 
+			        'C' || TO_CHAR(SYSDATE, 'YYYYMMDD') || LPAD(NVL(MAX(SUBSTR(CNUM, -4)), 0) + 1, 4, '0')
+			FROM COMMENT_LIST
+			WHERE SUBSTR(CNUM, 2, 8) = TO_CHAR(SYSDATE, 'YYYYMMDD')
+		</selectKey>
+		INSERT INTO COMMENT_LIST (
+		        CNUM        -- 댓글 번호
+		       ,CGROUPNUM   -- 그룹 번호
+		       ,CCONTENTS   -- 댓글 내용
+		       ,CPNUM       -- 상품 번호
+		       ,MNUM        -- 회원 번호
+		       ,CDELYN      -- 삭제 여부
+		       ,CINDATE     -- 댓글 작성일
+		)
+		VALUES (
+		        #{cnum, jdbcType=VARCHAR}
+		       ,#{cnum, jdbcType=VARCHAR}
+		       ,#{ccontents, jdbcType=VARCHAR}
+		       ,#{cpnum, jdbcType=VARCHAR}
+		       ,#{mnum, jdbcType=VARCHAR}
+		       ,'N'
+		       ,SYSDATE
+		)
+	</insert>
+
+	<!-- 댓글을 입력하는 쿼리(대 댓글) -->
+	<insert id="commentReInsert" parameterType="commentvo">
+		<selectKey keyProperty="cnum" resultType="String" order="BEFORE">
+			SELECT 
+			        'C' || TO_CHAR(SYSDATE, 'YYYYMMDD') || LPAD(NVL(MAX(SUBSTR(CNUM, -4)), 0) + 1, 4, '0')
+			FROM COMMENT_LIST
+			WHERE SUBSTR(CNUM, 2, 8) = TO_CHAR(SYSDATE, 'YYYYMMDD')
+		</selectKey>
+		INSERT INTO COMMENT_LIST(
+		        CNUM        -- 댓글 번호
+		       ,CGROUPNUM   -- 그룹 번호
+		       ,CTARGETNUM  -- 타겟 번호
+		       ,CCONTENTS   -- 댓글 내용
+		       ,CPNUM       -- 상품 번호
+		       ,MNUM        -- 회원 번호
+		       ,CDELYN      -- 삭제 여부
+		       ,CINDATE     -- 댓글 작성일
+		)
+		VALUES (
+		        #{cnum, jdbcType=VARCHAR}
+		       ,#{cgroupnum, jdbcType=VARCHAR}
+		       ,#{ctargetnum, jdbcType=VARCHAR}
+		       ,#{ccontents, jdbcType=VARCHAR}
+		       ,#{cpnum, jdbcType=VARCHAR}
+		       ,#{mnum, jdbcType=VARCHAR}
+		       ,'N'
+		       ,SYSDATE
+		)
+	</insert>
+
+	<!-- 댓글을 수정하는 쿼리 -->
+	<update id="commentUpdate" parameterType="commentvo">
+		UPDATE  COMMENT_LIST
+		SET
+		        CCONTENTS = #{ccontents, jdbcType=VARCHAR}
+		WHERE   CDELYN = 'N'
+		AND     CNUM   = #{cnum, jdbcType=VARCHAR}
+		AND     MNUM   = #{mnum, jdbcType=VARCHAR}
+	</update>
+
+	<!-- 댓글을 삭제하는 쿼리 -->
+	<update id="commentDelete" parameterType="commentvo">
+		UPDATE  COMMENT_LIST
+		SET
+		        CDELYN = 'Y'
+		WHERE   CDELYN = 'N'
+		AND     CNUM   = #{cnum, jdbcType=VARCHAR}
+		AND     MNUM   = #{mnum, jdbcType=VARCHAR}
+	</update>
+
+	<!-- 댓글을 삭제하는 쿼리(관리자) -->
+	<update id="commentDeleteAdmin" parameterType="commentvo">
+		UPDATE  COMMENT_LIST
+		SET
+		        CDELYN = 'Y'
+		WHERE   CDELYN = 'N'
+		AND     CNUM   = #{cnum, jdbcType=VARCHAR}
+	</update>
+
+	<!-- (댓글 번호로)선택한 댓글의 알림을 받을 대상의 회원번호를 가져오는 쿼리 -->
+	<select id="commentSelectNoti" parameterType="commentvo" resultMap="commentVOSelectNoti">
+		SELECT
+		        CL.CNUM             AS CNUM         -- 댓글번호
+		       ,CL.CPNUM            AS CPNUM        -- 상품번호
+		       ,NVL(G.MNUM ,A.MNUM) AS PMNUM        -- 알림 회원번호(상품)
+		       ,CO.MNUM             AS CMNUM        -- 알림 회원번호(상위 댓글)
+		FROM (
+		SELECT
+		        C.CNUM              AS CNUM
+		       ,C.CTARGETNUM        AS CTARGETNUM
+		       ,C.CPNUM             AS CPNUM
+		FROM    COMMENT_LIST C
+		WHERE   C.CNUM = #{cnum, jdbcType=VARCHAR}    -- 댓글번호
+		) CL, GENERAL_GOODS G, AUCTION_GOODS A, COMMENT_LIST CO
+		WHERE   CL.CPNUM = G.GNUM(+)
+		AND     CL.CPNUM = A.ANUM(+)
+		AND     CL.CTARGETNUM = CO.CNUM(+)
+	</select>
+</mapper>
