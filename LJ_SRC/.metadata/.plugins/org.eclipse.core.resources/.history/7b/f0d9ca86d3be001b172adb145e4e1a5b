@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spw.reg.dao.RegDao">
+
+	<resultMap type="regvo" id="regListVOCitPro">
+		<result property="regcode" column="REGCODE"/>
+		<result property="regname" column="REGNAME"/>
+	</resultMap>
+
+	<resultMap type="regvo" id="regListVOCiCoDi">
+		<result property="regcode" column="REGCODE"/>
+		<result property="regname" column="REGNAME"/>
+	</resultMap>
+
+	<resultMap type="regvo" id="regListVOToToNe">
+		<result property="regcode" column="REGCODE"/>
+		<result property="regname" column="REGNAME"/>
+	</resultMap>
+
+	<resultMap type="regvo" id="regListVOVillage">
+		<result property="regcode" column="REGCODE"/>
+		<result property="regname" column="REGNAME"/>
+	</resultMap>
+
+	<resultMap type="regvo" id="regListVOSelect">
+		<result property="regcode" column="REGCODE"/>
+		<result property="regname" column="REGNAME"/>
+	</resultMap>
+
+	<!-- 시/도 목록을 가져오는 쿼리 -->
+	<select id="regListCitPro" resultMap="regListVOCitPro">
+		SELECT
+		        R.REGCODE AS REGCODE        --법정동 코드
+		       ,R.REGNAME AS REGNAME        --법정동 이름
+		FROM REG_LIST R
+		WHERE REGCODE  LIKE '__00000000'
+		AND   REGEXIST = '존재'
+		ORDER BY R.REGCODE ASC
+	</select>
+
+	<!-- 선택한 시/도의 시/군/구 목록을 가져오는 쿼리 -->
+	<select id="regListCiCoDi" resultMap="regListVOCiCoDi" parameterType="regvo">
+		SELECT * FROM (
+		SELECT 
+		        RL.REGCODE AS REGCODE       --법정동 코드
+		       ,RL.REGNAME AS REGNAME       --법정동 이름
+		FROM REG_LIST RL
+		WHERE RL.REGCODE LIKE SUBSTR(#{regcode, jdbcType=VARCHAR}, 0, 2) || '%'
+		AND   REGEXIST = '존재'
+		) R
+		WHERE R.REGCODE LIKE '%00000'
+		AND   R.REGCODE NOT LIKE '__000%'
+		ORDER BY R.REGNAME ASC
+	</select>
+
+	<!-- 선택한 시/군/구의 읍/면/동 목록을 가져오는 쿼리 -->
+	<select id="regListToToNe" resultMap="regListVOToToNe" parameterType="regvo">
+		SELECT * FROM (
+		SELECT 
+		        RL.REGCODE AS REGCODE       --법정동 코드
+		       ,RL.REGNAME AS REGNAME       --법정동 이름
+		FROM REG_LIST RL
+		WHERE RL.REGCODE LIKE SUBSTR(#{regcode, jdbcType=VARCHAR}, 0, 5) || '%'
+		AND   REGEXIST = '존재'
+		) R
+		WHERE R.REGCODE LIKE '%00'
+		AND   R.REGCODE NOT LIKE '_____000%'
+		ORDER BY R.REGNAME ASC
+	</select>
+
+	<!-- 선택한 읍/면/동의 리 목록을 가져오는 쿼리 -->
+	<select id="regListVillage" resultMap="regListVOVillage" parameterType="regvo">
+		SELECT * FROM (
+		SELECT                                         
+		        RL.REGCODE AS REGCODE       --법정동 코드
+		       ,RL.REGNAME AS REGNAME       --법정동 이름
+		FROM REG_LIST RL
+		WHERE RL.REGCODE LIKE SUBSTR(#{regcode, jdbcType=VARCHAR}, 0, 8) || '%'
+		AND   REGEXIST = '존재'
+		) R
+		WHERE R.REGCODE NOT LIKE '%00'
+		ORDER BY R.REGNAME ASC
+	</select>
+
+	<!-- 선택한 법정동 코드의 정보를 가져오는 쿼리 -->
+	<select id="regListSelect" resultMap="regListVOSelect" parameterType="regvo">
+		SELECT 
+		        RL.REGCODE AS REGCODE        --법정동 코드
+		       ,RL.REGNAME AS REGNAME        --법정동 이름
+		FROM REG_LIST RL
+		WHERE RL.REGCODE = #{regcode, jdbcType=VARCHAR}
+		AND   REGEXIST = '존재'
+	</select>
+</mapper>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spw.notice.dao.NoticeMapper">
+
+	<!-- 경매상품 종료시 글 작성자, 입찰자에게 알림 추가 -->
+	<insert id="notiInsertAuct" parameterType="novo">
+		<selectKey keyProperty="nnum" resultType="string" order="BEFORE">
+			SELECT /*+INDEX_DESC(A SYS_C004040) */
+			        'N' || TO_CHAR(SYSDATE, 'YYYYMMDD') || LPAD(NVL(MAX(SUBSTR(N.NNUM, -4)), 0) + 1, 4, '0') 
+	        FROM NOTICE_LIST N
+			WHERE SUBSTR(NNUM, 2, 8) = TO_CHAR(SYSDATE, 'YYYYMMDD')
+		</selectKey>
+			INSERT INTO NOTICE_LIST( 
+									 NNUM		
+									,NMNUM		
+									,NSORT		
+									,NINFO		
+									,NURL		
+									,NDELYN		
+									,NSENDDATE 	
+									,MNUM 		
+			)VALUES(
+									 #{nnum}     --알림번호          
+									,#{nmnum}    --상대방 회원번호      
+									,#{nsort}    --알림 구분         
+									,#{ninfo}    --알림 내용         
+									,#{nurl}     --상품 상세보기 url   
+									,'N'         --상품 삭제 여부      
+									,SYSDATE     --알림 등록 날짜      
+									,#{mnum}     --회원번호          
+									)
+	</insert>
+
+	<!-- 사자,판다 거래신청시 알림 추가.  -->
+	<insert id="noticeInsert" parameterType="novo">
+		<selectKey keyProperty="nnum" resultType="String" order="BEFORE">
+			SELECT /*+INDEX_DESC(A SYS_C004040) */
+			        'N' || TO_CHAR(SYSDATE, 'YYYYMMDD') || LPAD(NVL(MAX(SUBSTR(N.NNUM, -4)), 0) + 1, 4, '0') 
+	        FROM NOTICE_LIST N
+			WHERE SUBSTR(NNUM, 2, 8) = TO_CHAR(SYSDATE, 'YYYYMMDD')
+		</selectKey>
+		INSERT INTO NOTICE_LIST(
+                 NNUM -- 알림번호.
+                ,NMNUM -- 알림보낸회원번호.
+                ,NSORT -- 알림구분.
+                ,NINFO -- 알림정보.
+                ,NURL -- URL.
+                ,NDELYN -- 삭제여부.
+                ,NSENDDATE -- 알림등록날짜.
+                ,MNUM -- 회원번호(상대방)
+        )VALUES(
+        		 #{nnum}
+        		,#{nmnum}
+        		,#{nsort}
+        		,#{ninfo}
+        		,#{nurl} 
+        		,'N'
+        		,SYSDATE
+        		,#{mnum}     
+		)
+	</insert>
+</mapper>

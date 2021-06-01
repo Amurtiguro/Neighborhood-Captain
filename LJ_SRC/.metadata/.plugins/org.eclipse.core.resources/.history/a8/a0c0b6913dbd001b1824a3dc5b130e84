@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spw.member.dao.ChartDAO">
+<!--
+년도 값과 cg값을 받아서 계산한다.
+년도를 넣었으면 해당하는 vo에 값이 담기도록 한다.
+-->
+
+<select id="cntAll" resultType="chartVO" parameterType="chartVO">
+select 
+sajacount1,pandacount1,auctcount1, (sajacount1 + pandacount1 + auctcount1) as totalcount1,
+sajacount2,pandacount2,auctcount2, (sajacount2 + pandacount2 + auctcount2) as totalcount2,
+sajacount3,pandacount3,auctcount3, (sajacount3 + pandacount3 + auctcount3) as totalcount3,
+sajacount4,pandacount4,auctcount4, (sajacount4 + pandacount4 + auctcount4) as totalcount4
+
+from
+<choose>
+<when test='cgNum !=null and cgNum !=""'>
+(select count(gnum) as sajacount1 from general_goods where cgNum = #{cgNum} and gsort='1' and gregdate between to_date(#{selectYear}||'0101','YYYYMMDD') and to_date(#{selectYear}||'0331','YYYYMMDD')),
+(select count(gnum) as pandacount1 from general_goods where cgNum = #{cgNum} and gsort='2' and gregdate between to_date(#{selectYear}||'0101','YYYYMMDD')and to_date(#{selectYear}||'0331','YYYYMMDD')),
+(select count(anum) as auctcount1 from auction_goods where cgNum = #{cgNum} and asort='3' and aregdate between to_date(#{selectYear}||'0101','YYYYMMDD')and to_date(#{selectYear}||'0331','YYYYMMDD')),
+(select count(gnum) as sajacount2 from general_goods where cgNum = #{cgNum} and gsort='1' and gregdate between to_date(#{selectYear}||'0401','YYYYMMDD') and to_date(#{selectYear}||'0630','YYYYMMDD')),
+(select count(gnum) as pandacount2 from general_goods where cgNum = #{cgNum} and gsort='2' and gregdate between to_date(#{selectYear}||'0401','YYYYMMDD')and to_date(#{selectYear}||'0630','YYYYMMDD')),
+(select count(anum) as auctcount2 from auction_goods where cgNum = #{cgNum} and asort='3' and aregdate between to_date(#{selectYear}||'0401','YYYYMMDD')and to_date(#{selectYear}||'0630','YYYYMMDD')),
+(select count(gnum) as sajacount3 from general_goods where cgNum = #{cgNum} and gsort='1' and gregdate between to_date(#{selectYear}||'0701','YYYYMMDD') and to_date(#{selectYear}||'0930','YYYYMMDD')),
+(select count(gnum) as pandacount3 from general_goods where cgNum = #{cgNum} and gsort='2' and gregdate between to_date(#{selectYear}||'0701','YYYYMMDD')and to_date(#{selectYear}||'0930','YYYYMMDD')),
+(select count(anum) as auctcount3 from auction_goods where cgNum = #{cgNum} and asort='3' and aregdate between to_date(#{selectYear}||'0701','YYYYMMDD')and to_date(#{selectYear}||'0930','YYYYMMDD')),
+(select count(gnum) as sajacount4 from general_goods where cgNum = #{cgNum} and gsort='1' and gregdate between to_date(#{selectYear}||'1001','YYYYMMDD') and to_date(#{selectYear}||'1231','YYYYMMDD')),
+(select count(gnum) as pandacount4 from general_goods where cgNum = #{cgNum} and gsort='2' and gregdate between to_date(#{selectYear}||'1001','YYYYMMDD')and to_date(#{selectYear}||'1231','YYYYMMDD')),
+(select count(anum) as auctcount4 from auction_goods where cgNum = #{cgNum} and asort='3' and aregdate between to_date(#{selectYear}||'1001','YYYYMMDD')and to_date(#{selectYear}||'1231','YYYYMMDD'))
+</when>
+<otherwise>
+(select count(gnum) as sajacount1 from general_goods where gsort='1' and gregdate between to_date(#{selectYear}||'0101','YYYYMMDD') and to_date(#{selectYear}||'0331','YYYYMMDD')),
+(select count(gnum) as pandacount1 from general_goods where gsort='2' and gregdate between to_date(#{selectYear}||'0101','YYYYMMDD')and to_date(#{selectYear}||'0331','YYYYMMDD')),
+(select count(anum) as auctcount1 from auction_goods where asort='3' and aregdate between to_date(#{selectYear}||'0101','YYYYMMDD')and to_date(#{selectYear}||'0331','YYYYMMDD')),
+(select count(gnum) as sajacount2 from general_goods where gsort='1' and gregdate between to_date(#{selectYear}||'0401','YYYYMMDD') and to_date(#{selectYear}||'0630','YYYYMMDD')),
+(select count(gnum) as pandacount2 from general_goods where gsort='2' and gregdate between to_date(#{selectYear}||'0401','YYYYMMDD')and to_date(#{selectYear}||'0630','YYYYMMDD')),
+(select count(anum) as auctcount2 from auction_goods where asort='3' and aregdate between to_date(#{selectYear}||'0401','YYYYMMDD')and to_date(#{selectYear}||'0630','YYYYMMDD')),
+(select count(gnum) as sajacount3 from general_goods where gsort='1' and gregdate between to_date(#{selectYear}||'0701','YYYYMMDD') and to_date(#{selectYear}||'0930','YYYYMMDD')),
+(select count(gnum) as pandacount3 from general_goods where gsort='2' and gregdate between to_date(#{selectYear}||'0701','YYYYMMDD')and to_date(#{selectYear}||'0930','YYYYMMDD')),
+(select count(anum) as auctcount3 from auction_goods where asort='3' and aregdate between to_date(#{selectYear}||'0701','YYYYMMDD')and to_date(#{selectYear}||'0930','YYYYMMDD')),
+(select count(gnum) as sajacount4 from general_goods where gsort='1' and gregdate between to_date(#{selectYear}||'1001','YYYYMMDD') and to_date(#{selectYear}||'1231','YYYYMMDD')),
+(select count(gnum) as pandacount4 from general_goods where gsort='2' and gregdate between to_date(#{selectYear}||'1001','YYYYMMDD')and to_date(#{selectYear}||'1231','YYYYMMDD')),
+(select count(anum) as auctcount4 from auction_goods where asort='3' and aregdate between to_date(#{selectYear}||'1001','YYYYMMDD')and to_date(#{selectYear}||'1231','YYYYMMDD'))
+
+</otherwise>
+</choose>
+
+
+</select>
+</mapper>

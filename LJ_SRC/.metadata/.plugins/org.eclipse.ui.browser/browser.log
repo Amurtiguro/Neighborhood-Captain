@@ -1,0 +1,3 @@
+
+5월 27, 2021 19:08:16.190 NEW SESSION
+5월 27, 2021 19:08:16.190 [3940:15944:0527/190816.188:ERROR:device_event_log_impl.cc(214)] [19:08:16.188] Bluetooth: bluetooth_adapter_winrt.cc:1072 Getting Default Adapter failed.

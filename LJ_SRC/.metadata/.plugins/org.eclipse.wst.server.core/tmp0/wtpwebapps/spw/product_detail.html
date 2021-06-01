@@ -1,0 +1,257 @@
+<!DOCTYPE HTML>
+<html>
+<meta charset="UTF-8">
+<head>
+<title>상세보기</title>
+<!-- css파일 위치 확정되면 변경 -->
+<link rel="stylesheet" href="mainstyle.css">
+</head>
+<body>
+<!-- 상단바와 내용 -->
+<div id="sitearea">
+	<!-- 상단바 -->
+	<header id="topbar">
+		<div class="wrapper">
+			<!-- 상단바 로고영역(로고, 검색) -->
+			<div id="logoarea">
+				<!-- 로고 -->
+				<div id="toplogo">
+					<a href="#임시">
+						<!-- 로고이미지 위치 확정되면 변경 -->
+						<img src="logo.png" id="sitelogo">
+					</a>
+				</div>
+				<!-- 검색바 -->
+				<div id="searchbar">
+					<form>
+						<!-- 드롭다운 -->
+						<select>
+							<option>사자</option>
+							<option>판다</option>
+							<option>경매</option>
+						</select>
+						<!-- 텍스트필드 -->
+						<div id="searchtext">
+							<input type="text">
+						</div>
+						<!-- 검색버튼 -->
+						<input type="submit" value="검색" id="searchbtn">
+					</form>
+				</div>
+			</div>
+			<div id="btnarea">
+					<a href="#임시" class="sitebtn">로그인</a>
+					<a href="#임시" class="sitebtn">회원가입</a>
+					<a href="#임시" class="sitebtn">글쓰기</a>
+			</div>
+		</div>
+		<!-- 메뉴 -->
+		<div id="naviarea">
+			<ul class="wrapper">
+				<!-- 메뉴버튼들 -->
+				<li>
+					<a href="#임시">
+						<div class="nav_btn">
+							사자
+						</div>
+					</a>
+				</li>
+				<li>
+					<a href="#임시">
+						<div class="nav_btn">
+							판다
+						</div>
+					</a>
+				</li>
+				<li>
+					<a href="#임시">
+						<div class="nav_btn">
+							동네
+						</div>
+					</a>
+				</li>
+				<li>
+					<a href="#임시">
+						<div class="nav_btn">
+							경매
+						</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</header>
+	<!-- 내용 -->
+	<div id="sitecontent">
+		<div class="wrapper">
+			<div class="product_detail">
+				<div class="product_top">
+					<h2 class="product_title">
+						상품제목
+					</h2>
+					<div class="product_info_mini">
+						<span class="product_writer">
+							seller1234 
+						</span>
+						<span class="product_date">
+							(2020.08.01)
+						</span>
+					</div>
+					<div class="product_info">
+						<!-- 이미지 -->
+						<!-- product_info_images의 style와 내부의 img태그의 src에 동일한 이미지 경로 입력 -->
+						<div class="product_info_images" style="background-image: url(imgplaceholder.png);" alt="상품 이미지">
+							<img src="imgplaceholder.png">
+						</div>
+						<div class="product_info_side">
+							<div class="product_sort_label label_saja">사자</div>
+							<div class="product_info_detail">
+								<p>카테고리 : <span>디지털</span></p>
+								<p>거래지역 : <span>서울시 금천구 가산동</span></p>
+							</div>
+							<div class="product_info_bottom">
+								<div class="product_info_price">
+									<span>55,000</span>원
+								</div>
+								<div class="product_action">
+									<a href="#임시" class="sitebtn label_default">거래신청</a>
+									<a href="#임시" class="sitebtn">찜하기</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="product_content">
+					<h4>상세 설명</h4>
+					<div class="product_content_txt">
+						<!-- 아무의미없는 더미텍스트 -->
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>
+						Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<br>
+						Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.<br>
+						Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</div>
+					<div class="product_content_btn">
+						<a href="#임시" class="sitebtn">수정</a>
+						<a href="#임시" class="sitebtn">삭제</a>
+					</div>
+				</div>
+				<!-- 댓글 -->
+				<div class="comment_wrap">
+					<div class="comment_content">
+						<div class="comment_root">
+							<div class="comment_row" id="Comment-C1">
+								<div class="comment_top">
+									<span class="comment_writer">작성자</span>
+									<span class="comment_date">(2020.08.05)</span>
+									<div class="comment_btns">
+										<a href="#임시" class="sitebtn">수정</a>
+										<a href="#임시" class="sitebtn">삭제</a> 
+										<a href="#임시" class="sitebtn">답글</a>
+									</div>
+								</div>
+								<div class="comment_txt">
+									최상위 댓글
+								</div>
+							</div>
+						</div>
+						<div class="comment_re">
+							<div class="comment_row" id="Comment-C2">
+								<div class="comment_top">
+									<span class="comment_writer">작성자1</span>
+									<span class="comment_date">(2020.08.05)</span>
+									<div class="comment_btns">
+										<a href="#임시" class="sitebtn">수정</a>
+										<a href="#임시" class="sitebtn">삭제</a>
+										<a href="#임시" class="sitebtn">답글</a>
+									</div>
+									
+								</div>
+								<div class="comment_txt">
+									대 댓글
+								</div>
+							</div>
+						</div>
+						<div class="comment_re">
+							<div class="comment_row" id="Comment-C3">
+								<div class="comment_top">
+									<span class="comment_writer">작성자2</span>
+									<span class="comment_date">(2020.08.05)</span>
+									<div class="comment_btns">
+										<a href="#임시" class="sitebtn">수정</a>
+										<a href="#임시" class="sitebtn">삭제</a>
+										<a href="#임시" class="sitebtn">답글</a>
+									</div>
+								</div>
+								<div class="comment_txt">
+									대 댓글
+								</div>
+							</div>
+						</div>
+						<div class="comment_re">
+							<div class="comment_row" id="Comment-C4">
+								<div class="comment_top">
+									<span class="comment_writer">작성자3</span>
+									<span class="comment_date">(2020.08.05)</span>
+									<div class="comment_btns">
+										<a href="#임시" class="sitebtn">수정</a>
+										<a href="#임시" class="sitebtn">삭제</a>
+										<a href="#임시" class="sitebtn">답글</a>
+									</div>
+									
+								</div>
+								<div class="comment_txt">
+									<a href="#Comment-C2" class="recomm_target">작성자1</a> 대 댓글
+								</div>
+							</div>
+						</div>
+						<div class="comment_root">
+							<div class="comment_row" id="Comment-C5">
+								<div class="comment_top">
+									<span class="comment_writer">작성자2</span>
+									<span class="comment_date">(2020.08.05)</span>
+									<div class="comment_btns">
+										<a href="#임시" class="sitebtn">수정</a>
+										<a href="#임시" class="sitebtn">삭제</a> 
+										<a href="#임시" class="sitebtn">답글</a>
+									</div>
+								</div>
+								<div class="comment_txt">
+									최상위 댓글
+								</div>
+							</div>
+						</div>
+						<div class="comment_root">
+							<div class="comment_row" id="Comment-C6">
+								삭제된 댓글 입니다.
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="formbox formbox_100">
+					<div class="formcontent">
+						<form>
+						<textarea id="areabox" name="areabox" class="sitetxt form_ele_max"></textarea>
+						<div class="formrow formrow_right">
+							<input type="submit" class="sitebtn" value="작성">
+						</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 하단바 -->
+<footer id="footerarea">
+	<div class="wrapper">
+		<div>
+			[하단바]
+			<br>아이콘 제작자 :
+			<a href="http://www.freepik.com/" title="Freepik">Freepik</a>
+			from
+			<a href="https://www.flaticon.com/kr/" title="Flaticon"> www.flaticon.com</a>
+		</div>
+	</div>
+</footer>
+</body>
+</html>

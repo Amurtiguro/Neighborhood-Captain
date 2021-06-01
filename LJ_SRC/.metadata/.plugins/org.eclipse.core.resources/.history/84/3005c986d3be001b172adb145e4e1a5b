@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spw.mainpage.dao.MainpageDao">
+	<resultMap id="selectNewGeneralVO" type="gvo">
+		<result property="gnum" column="GNUM"/>
+		<result property="gsort" column="GSORT"/>
+		<result property="gtitle" column="GTITLE"/>
+		<result property="gphoto" column="GPHOTO"/>
+		<result property="gprice" column="GPRICE"/>
+		<result property="gregcode" column="GREGCODE"/>
+		<result property="regname" column="REGNAME"/>
+	</resultMap>
+
+	<resultMap id="selectNewAuctionVO" type="auvo">
+		<result property="anum" column="ANUM"/>
+		<result property="asort" column="ASORT"/>
+		<result property="atitle" column="ATITLE"/>
+		<result property="aphoto" column="APHOTO"/>
+		<result property="aloc" column="ALOC"/>
+		<result property="apricemin" column="APRICEMIN"/>
+	</resultMap>
+
+	<!-- 사자/판다 최근글 4개 -->
+	<select id="selectNewGeneral" parameterType="gvo" resultMap="selectNewGeneralVO">
+		SELECT * FROM (
+		SELECT
+		        G.GNUM      AS GNUM         -- 번호
+		       ,G.GSORT     AS GSORT        -- 구분
+		       ,G.GTITLE    AS GTITLE       -- 제목
+		       ,G.GPHOTO    AS GPHOTO       -- 사진
+		       ,TO_CHAR(G.GPRICE, 'FM9,999,999,999')    AS GPRICE       -- 가격
+		       ,G.GREGCODE  AS GREGCODE     -- 법정동 코드
+		       ,NVL(R.REGNAME, G.GLOC)   AS GLOC         -- 거래지역
+		FROM    GENERAL_GOODS G
+		       ,REG_LIST R
+		WHERE   G.GREGCODE = R.REGCODE(+)
+		AND     G.GSORT = #{gsort, jdbcType=VARCHAR}
+		AND     G.GDELYN = 'N'
+		AND     G.GSTATUS = '1'
+		ORDER BY G.GREGDATE DESC
+		)
+		<![CDATA[WHERE   ROWNUM <= 4]]>
+	</select>	
+
+	<!-- 경매 최근글 4개 -->
+	<select id="selectNewAuction" parameterType="auvo" resultMap="selectNewAuctionVO">
+		SELECT
+		        AG.ANUM      AS ANUM         -- 번호
+		       ,AG.ASORT     AS ASORT        -- 구분
+		       ,AG.ATITLE    AS ATITLE       -- 제목
+		       ,AG.APHOTO    AS APHOTO       -- 사진
+		       ,AG.ALOC      AS ALOC         -- 거래지역
+		       ,TO_CHAR(NVL((SELECT MAX(TO_NUMBER(B.BPRICE))
+		         FROM   BID_LIST B
+		         WHERE  B.ANUM = AG.ANUM), AG.APRICEMIN), 'FM9,999,999,999') AS APRICEMIN -- 최고가
+		FROM (
+		SELECT
+		        A.ANUM          AS ANUM         -- 번호
+		       ,A.ASORT         AS ASORT        -- 구분
+		       ,A.ATITLE        AS ATITLE       -- 제목
+		       ,A.APHOTO        AS APHOTO       -- 사진
+		       ,A.ALOC          AS ALOC         -- 거래지역
+		       ,A.APRICEMIN     AS APRICEMIN    -- 시작가
+		FROM    AUCTION_GOODS A
+		WHERE   A.ASORT = '3'
+		AND     A.ADELYN = 'N'
+		AND     A.ASTATUS = '1'
+		ORDER BY A.AREGDATE DESC
+		) AG
+		<![CDATA[WHERE   ROWNUM <= 4]]>
+	</select>
+</mapper>

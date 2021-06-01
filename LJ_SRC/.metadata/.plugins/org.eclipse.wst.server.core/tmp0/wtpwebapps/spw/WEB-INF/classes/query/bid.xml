@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spw.bid.dao.BidMapper">
+
+	<insert id="bidInsert" parameterType="bivo">
+		<selectKey keyProperty="bnum" resultType="string" order="BEFORE">
+			SELECT /*+INDEX_DESC(A SYS_C003963) */
+			        'B' || TO_CHAR(SYSDATE, 'YYYYMMDD') || LPAD(NVL(MAX(SUBSTR(BNUM, -4)), 0) + 1, 4, '0') 
+	        FROM BID_LIST
+			WHERE SUBSTR(BNUM, 2, 8) = TO_CHAR(SYSDATE, 'YYYYMMDD')
+		</selectKey>
+		
+		INSERT INTO BID_LIST(
+		                        BNUM
+		                        ,BPRICE
+		                        ,BWINYN
+		                        ,BDATE
+		                        ,ANUM
+		                        ,MNUM
+	                       		)
+        						VALUES
+        						(
+		                         #{bnum}			--입찰번호
+		                        ,#{bprice}			--입찰가격
+		                        ,#{bwinyn}			--낙찰여부
+		                        ,SYSDATE			--입찰날짜
+		                        ,#{anum}			--경매상품번호
+		                        ,#{mnum}			--입찰 신청한 회원번호
+	                       		)
+	</insert>
+
+	
+
+	<select id="bidSelect" parameterType="auvo" resultType="bivo">
+		SELECT
+				 B.BNUM		AS BNUM
+				,B.BPRICE	AS BPRICE
+				,B.BWINYN	AS BWINYN
+				,B.BDATE	AS BDATE
+				,B.ANUM		AS ANUM
+				,B.MNUM		AS MNUM
+		FROM 
+				BID_LIST B
+		WHERE 
+				ANUM	=#{anum}
+		AND 
+				BPRICE	=(
+				            SELECT 
+				            		MAX(TO_NUMBER(BPRICE))
+				            FROM 
+				            		BID_LIST
+				            WHERE 
+				            		ANUM	=	#{anum}
+				            GROUP BY ANUM
+			            )
+	</select>
+	
+	<update id="bidUpdateWin" parameterType="bivo">
+		UPDATE BID_LIST 
+		SET 	
+				BWINYN	=	'Y'
+		WHERE 	
+				BNUM	=	#{bnum}
+	</update>
+</mapper>

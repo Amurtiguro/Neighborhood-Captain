@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spw.category.dao.CategoryDao">
+
+	<resultMap type="categoryvo" id="categoryVOList">
+		<result property="cgcode" column="CGCODE"/>
+		<result property="cgname" column="CGNAME"/>
+	</resultMap>
+
+	<resultMap type="categoryvo" id="categoryVOSelect">
+		<result property="cgcode" column="CGCODE"/>
+		<result property="cgname" column="CGNAME"/>
+	</resultMap>
+
+	<resultMap type="categoryvo" id="categoryVOInsert">
+		<result property="cgcode" column="CGCODE"/>
+		<result property="cgname" column="CGNAME"/>
+	</resultMap>
+
+	<resultMap type="categoryvo" id="categoryVOUpdate">
+		<result property="cgcode" column="CGCODE"/>
+		<result property="cgname" column="CGNAME"/>
+	</resultMap>
+
+	<!-- 카테고리 목록을 가져오는 쿼리 -->
+	<select id="categoryList" resultMap="categoryVOList">
+		SELECT
+		        C.CGNUM   AS CGNUM     -- 카테고리 코드
+		       ,C.CGNAME  AS CGNAME    -- 카테고리 이름
+		FROM
+		        CATEGORY_LIST C
+		ORDER BY C.CGNUM ASC
+	</select>
+
+	<!-- 코드에 맞는 카테고리를 가져오는 쿼리 -->
+	<select id="categorySelect" resultMap="categoryVOSelect" parameterType="categoryvo">
+		SELECT
+		        C.CGNUM   AS CGNUM     -- 카테고리 코드
+		       ,C.CGNAME  AS CGNAME    -- 카테고리 이름
+		FROM
+		        CATEGORY_LIST C
+		WHERE
+		        C.CGNUM = #{cgnum, jdbcType=VARCHAR}    -- 카테고리 코드
+	</select>
+
+	<!-- 새 카테고리를 등록하는 쿼리 -->
+	<insert id="categoryInsert" parameterType="categoryvo">
+		<selectKey keyProperty="cgnum" resultType="String" order="BEFORE">
+			SELECT 
+			        'CG' || LPAD(NVL(MAX(SUBSTR(CGNUM, -2)), 0) + 1, 2, '0') as CGNUM
+			FROM CATEGORY_LIST
+		</selectKey>
+		INSERT INTO CATEGORY_LIST(
+		        CGNUM
+		       ,CGNAME
+		)
+		VALUES(
+		        #{cgnum, jdbcType=VARCHAR}        -- 카테고리 코드
+		       ,#{cgname, jdbcType=VARCHAR}       -- 카테고리 이름
+		)
+	</insert>
+
+	<!-- 카테고리를 편집하는 쿼리 -->
+	<update id="categoryUpdate" parameterType="categoryvo">
+		UPDATE CATEGORY_LIST
+		SET
+		        CGNAME = #{cgname, jdbcType=VARCHAR}   -- 카테고리 이름
+		WHERE
+		        CGNUM  = #{cgnum, jdbcType=VARCHAR}    -- 카테고리 코드
+	</update>
+
+</mapper>
