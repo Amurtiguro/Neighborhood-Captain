@@ -1,6 +1,0 @@
-#Wed May 26 19:11:13 KST 2021
-__DEFAULT__=false
-org.eclipse.sdk.Eclipse.master=true
-org.eclipse.sdk.Google.master=true
-org.eclipse.help.ui.localSearch.master=true
-expression=session
