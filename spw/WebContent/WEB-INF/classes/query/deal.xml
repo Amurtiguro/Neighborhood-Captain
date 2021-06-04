@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spw.deal.dao.DealDao">
+	<!-- 거래신청.  -->
+	<insert id="dealInsert" parameterType="dealVO">
+		<selectKey keyProperty="dnum" resultType="String" order="BEFORE">
+			SELECT /*+  SYS_C003970*/ 
+		           'D' || TO_CHAR(SYSDATE, 'YYYYMMDD') || LPAD(NVL(MAX(SUBSTR(A.DNUM, -4)), 0) + 1, 4, '0') 
+	        FROM DEAL_REQ A
+			WHERE SUBSTR(DNUM, 2, 8) = TO_CHAR(SYSDATE, 'YYYYMMDD')
+		</selectKey>
+		INSERT INTO DEAL_REQ(
+		         DNUM -- 거래신청번호.
+		        ,DCONTACT -- 거래할 전화번호.
+		        ,DDATE -- 거래신청날짜.
+		        ,GNUM -- 글번호.
+		        ,MNUM -- 회원번호.
+		)VALUES(
+		         #{dnum} -- 거래신청번호.
+		        ,#{dcontact}  -- 거래할 전화번호.
+		        ,SYSDATE  -- 거래신청날짜.
+		        ,#{gnum}  -- 글번호.
+		        ,#{mnum}  -- 회원번호.
+		)
+	</insert>
+</mapper>

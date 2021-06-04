@@ -1,0 +1,243 @@
+/* 이미지 */
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+.login_wrapper{
+	display: table;
+	height: 100%;
+    width: 100%;
+	
+}
+ .background_img{
+	background-image: url(/spw/include/img/background.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	filter: blur(0px);
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: -1;
+}
+.login_box{
+	display: table-cell;
+	vertical-align: middle;
+	
+	 
+}
+.login_box1{
+	display: table-cell;
+	vertical-align: middle;
+	
+	 
+}
+.btn{
+	height: 50px;
+}
+.login_logo{
+	width:100%;
+	margin-bottom: 50px;
+		
+}
+/*로그인에서 흰색바탕 */
+.dd{
+	width:500px;
+	margin: 0 auto;
+	background: rgba(255, 255, 255, 0.5);
+	text-align:center;
+	padding: 100px 0px 80px 0px;
+}
+	
+.login_logo > a img{
+	width: 500px;
+	max-width:100%;
+	height:auto;
+
+}
+/*메인 화면 */
+.main_go a:hover{
+	background-color: olive;
+}
+.main_go a{
+	
+	font-weight: bold;
+	text-decoration: none;
+	font-size: 18px;
+	
+}
+.subject{
+	font-weight: bold;
+    font-size: 40px;
+    margin: 0px;
+        position: relative;
+    top: -50px;
+}
+.login_contents {
+	
+	text-align:center;
+	margin:0 auto;
+}
+/* 로그인 폼 */
+.login_form{
+	
+	text-align:center;
+	margin:0 auto;
+}
+.loginfo{
+	font-size:20px;
+	width: 500px;
+	width: 18.750rem;
+	height: 26px;
+	height: 1.625rem;
+	padding:10px 0 10px 0;
+	margin-bottom:15px;
+	border:1px solid #B7B7B7;	
+}
+.sub_subject{
+	
+}
+.loginbtn{
+	width:300px;
+	display: inline-block;
+	font-size: 1.2em;
+	height: 3em;
+	line-height: 1.75em;
+	text-decoration: none;
+	color: white;
+	font-weight: bold;
+	background-color: #ee6b28;
+	padding: 0 0.5em;
+	border: none;
+	border-radius: 0.25em;
+	cursor: pointer;
+	outline: none;
+	border-collapse: separate;
+	vertical-align: middle;
+	white-space: nowrap;
+	box-sizing: border-box;
+	margin-top :8px ;
+	margin-bottom:8px;
+}
+.link_a{
+	margin-top: 10;
+	;
+ 	
+}
+.findinfo{
+	font-size:medium;
+	font-weight:bold;
+	text-decoration:none;
+	color: #333;
+	
+}
+.login_form a:hover{
+	background-color: #AAA;
+}
+
+@media screen and (max-width: 600px){
+	.dd {
+		width: auto;
+		max-width: 300px;
+		padding: 50px;
+		padding: 3.125rem;
+	}
+
+	.login_contents {
+		max-width: 300px;
+	}
+
+	.loginfo {
+		font-size: 20px;
+		width: 100%;
+		height: 3em;
+		padding: 0.5em;
+		box-sizing: border-box;
+	}
+
+	.loginbtn {
+    	width: 100%;
+	}
+
+	.naver_btn img{
+		width: 100%;
+		height: auto;
+	}
+
+	.subject {
+		top: 0;
+		margin-bottom: 0.5em;
+		font-size: 2em;
+	}
+
+	form.joinform{
+		width: 100%;
+		max-width: 320px;
+		max-width: 20rem;
+	}
+
+	.joinform table{
+		width: 100%;
+	}
+
+	.joinform table tr, .joinform table td{
+		padding: 0;
+		margin: 0;
+	}
+
+	.loginfo {
+		height: 2.5em;
+		padding: 0.25em;
+		font-size: 1em;
+		margin-bottom: 0.5em;
+	}
+
+	.btn{
+		width: 100%;
+		height: 2.5em;
+		box-sizing: border-box;
+		margin-bottom: 0.5em;
+	}
+
+	input#mphone0,
+	input#mphone1,
+	input#mphone2{
+		width: 3.75em !important;
+	}
+
+	input#memail0{
+		width: 10em !important;
+	}
+
+	input#memail1{
+		width: 100% !important;
+	}
+}
+
+@media screen and (max-width: 450px){
+	.link_a a {
+		font-size: 0.9em;
+	}
+}
+
+@media screen and (max-width: 360px){
+	.link_a a {
+		font-size: 0.85em;
+	}
+
+	.dd {
+		padding: 32px;
+		padding: 2rem;
+	}
+
+	.login_box1 .dd {
+		padding: 24px;
+		padding: 1.5rem;
+	}
+}

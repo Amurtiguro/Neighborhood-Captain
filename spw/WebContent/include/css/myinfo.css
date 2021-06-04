@@ -1,0 +1,61 @@
+html, body{
+	margin : 0;
+	padding : 0;
+	height: 100%;
+}
+.myinfo_contents{
+	align:center;
+}
+h2{
+	text-align:left;
+}
+.myinfo_form{
+	margin-top:5px;
+	border:3px solid #EAEAEA;
+	text-align:center;
+}
+.myinfo_form a{
+	line-height:160%;
+	border-bottom:3px solid #EAEAEA;
+}
+.myinfo_form span{
+	line-height:160%;
+	height: 26px;
+	height: 1.625rem;
+	padding: 2px;
+	padding: 0.125rem;
+	border: solid 2px black;
+	border: solid 0.125rem black;
+}
+.myinfo_form span input{
+	
+	padding: 0;
+	border: none;
+	outline: none;
+}
+.myinfo_func{	
+	text-align:right;	
+}	
+.myinfo_center{
+	text-align:center;
+	display:flex;
+	width:50%;
+	margin:0 15% 0 35%;
+}
+.myinfo_left{
+  	width:25%;
+  	border-left:3px solid #EAEAEA;
+}
+.myinfo_left font{
+	color:red;
+	margin-right:5px;
+}
+.myinfo_middle{
+	width:20%;
+}
+.myinfo_right{
+	width:25%;
+	text-align:left;
+	margin-top:26%;
+	margin-left:3%;
+}
