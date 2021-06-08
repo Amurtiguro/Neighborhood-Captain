@@ -1,0 +1,19 @@
+.admin_container{
+	text-align:center;
+}
+.admin_container a{
+	font-size:24px;
+	text-decoration:none;
+	font-weight: bold;
+	padding: 0 0.5em;
+	color: white;
+	background-color: #999;
+}
+.admin_container a:hover{
+	
+}
+
+.chart{
+	
+	border:1px solid black;
+}

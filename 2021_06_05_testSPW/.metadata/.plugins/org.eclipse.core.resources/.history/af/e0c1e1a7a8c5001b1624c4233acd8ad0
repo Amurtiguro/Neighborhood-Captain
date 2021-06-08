@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spw.member.dao.MemberDAO">
+	<!-- 아이디 중복 체크하기 -->
+	<select id="idchk" resultType="int">
+	select count(*) from member_list
+	where mid = #{mid}
+	</select>
+	<!--config.mybatis-config.xml에서 세팅한 엘리어스 값을 파라미터 타입으로 -->
+	<insert id="memInsert" parameterType="memberVO">
+		<selectKey keyProperty="mnum" resultType="String"
+			order="BEFORE">
+			SELECT
+			'M' || TO_CHAR(SYSDATE, 'YYYYMMDD') ||
+			LPAD(NVL(MAX(SUBSTR(mnum,
+			-4)), 0) + 1, 4, '0') FROM member_list
+			WHERE
+			SUBSTR(mnum, 2, 8) = TO_CHAR(SYSDATE, 'YYYYMMDD')
+		</selectKey>
+		insert into member_list
+		values
+		(
+		#{mnum},#{mid},#{mpw},#{mname},#{mphone},#{maddr0},#{maddr1},
+		#{maddr2},#{memail},sysdate,sysdate,sysdate,'N'
+		)
+	</insert>
+	<!-- 
+	값을 리스트에 vo를 담아서 뽑을려고 한다.
+	여기서 resulType을 list로 설정하는것이 아니고 
+	VO로만 설정을 하고 
+	DAO에서 SqlSession().selectList()를 사용하면 list로 리턴 받는다.
+	 -->
+	<select id="memSelectAll" parameterType="memberVO"
+		resultType="memberVO">
+		SELECT * FROM(
+SELECT
+ A.MNUM AS MNUM,
+ A.MID AS MID,
+ A.MPW AS MPW,
+ A.MNAME AS MNAME,
+ A.MPHONE AS MPHONE,
+ A.MEMAIL AS MEMAIL,
+ A.MADDR0 AS MADDR0,
+ A.MADDR1 AS MADDR1,
+ A.MADDR2 AS MADDR2,
+ TO_CHAR(A.MREGDATE,'YYYY-MM-DD') AS MREGDATE,
+ TO_CHAR(A.MINDATE,'YYYY-MM-DD') AS MINDATE,
+ TO_CHAR(A.MUPDATE,'YYYY-MM-DD') AS MUPDATE,
+ #{GROUPSIZE} AS  GROUPSIZE,
+ #{PAGESIZE} AS PAGESIZE,
+ CEIL(ROW_NUMBER() OVER(ORDER BY A.MNUM DESC) / #{PAGESIZE}) CURPAGE,
+ COUNT(A.MNUM) OVER() AS TOTALCOUNT
+ 
+ FROM MEMBER_LIST A
+ <choose>
+ <when test="mid!=null"> where mid = #{mid} and madmin = 'N'
+ </when>
+ <otherwise>where madmin = 'N'</otherwise>
+ </choose>
+ order by 1 desc
+)
+where curPage = #{curPage}
+	</select>
+	<insert id="naverInsert" parameterType="memberVO">
+	
+	<selectKey keyProperty="mnum" resultType="String"
+			order="BEFORE">
+			SELECT
+			'M' || TO_CHAR(SYSDATE, 'YYYYMMDD') ||
+			LPAD(NVL(MAX(SUBSTR(mnum,
+			-4)), 0) + 1, 4, '0') FROM member_list
+			WHERE
+			SUBSTR(mnum, 2, 8) = TO_CHAR(SYSDATE, 'YYYYMMDD')
+		</selectKey>
+			insert into member_list
+			(mnum, mid, mname, memail,mregdate,mindate,mupdate,madmin)
+		values
+		(
+		#{mnum},#{mid},#{mname},#{memail},sysdate,sysdate,sysdate,'N'
+		)
+	
+	</insert>
+	<select id="naverSelect" parameterType="memberVO" resultType="memberVO">
+		select mid
+		from member_list
+		where mid = #{mid}
+	
+	</select>
+	<select id="naverLogin" parameterType="memberVO"
+		resultType="memberVO">
+		select mnum
+		from member_list
+		WHERE MID = #{mid} AND memail = #{memail} AND mname = #{mname}
+	</select>
+	
+	
+	
+	<select id="memLogin" parameterType="memberVO"
+		resultType="memberVO">
+		select mnum
+		from member_list
+		WHERE MID = #{mid} AND MPW = #{mpw}
+	</select>
+	
+	<select id="memIdfind" parameterType="memberVO" resultType="memberVO">
+		select
+		mid, memail, mname, mnum
+		from member_list
+		where memail = #{memail}
+	</select>
+	
+	<select id="memPwfind" parameterType="memberVO" resultType="memberVO">
+		select
+		mid, mpw, memail, mname, mnum
+		from member_list
+		where mid = #{mid} and memail = #{memail}
+	</select>
+	<!--  관리자가 삭제 시 히스토리로 추가. 변경해야함. -->
+	<update id="adminDel" parameterType="memberVO">
+		update
+		hmember_list
+		set
+		hmdelyn ='Y'
+		where mnum = #{mnum}
+	</update>
+</mapper>

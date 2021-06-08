@@ -1,0 +1,8 @@
+INDEX VERSION 1.4+C:\00.KOSMO78\30.web\testSPW\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+1307952286.index
+951328327.index
+3791234761.index
+393618534.index
+319429800.index
+407390937.index
+99657741.index
