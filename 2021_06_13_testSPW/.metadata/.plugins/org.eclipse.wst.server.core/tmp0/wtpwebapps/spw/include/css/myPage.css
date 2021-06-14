@@ -1,0 +1,209 @@
+html, body{
+	margin : 0;
+	padding : 0;
+	height: 100%;
+}
+hr{
+	border:5px solid #EAEAEA;
+}
+/* 마이페이지 */
+.mypage_contents{
+	width: 100%;
+}
+.myinfo{
+	width:100%;
+	height:auto;
+	border:5px solid #EAEAEA;
+	display:flex;
+}
+/* 회원정보 */
+.myinfo_list{
+	width:30%;
+	height:auto;
+	/* border:2px solid orange; */
+	/* margin:25px 50px 25px 50px; */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.myinfo_list h3{
+	text-align:center;
+}
+.myinfo_pic{
+	border:3px solid #EAEAEA;
+	width:150px;
+	height:150px;
+	text-align:center;
+}
+.myinfo_pic img{
+	width:150px;
+	height:150px;
+	text-align:center;
+}
+.myinfo_id{
+	text-align:center;
+}
+.myinfo span{
+	font-weight:bold;
+	font-size:1.5em;
+}
+.myinfo_btn{
+	margin:0 0 5px 0;
+	text-align:center;
+}
+
+/* 알림 목록 */
+.mynotice_list{
+	width:70%;
+	height:auto;
+	border-left:5px solid #EAEAEA;
+	margin:0 0 0 10px;
+	
+}
+.mynotice_list h3{
+	text-align:center;
+	margin: 18px 0 0 10px;
+}
+/* 목록 버튼 */
+.list_contents{
+	width: 100%;
+	overflow: auto;
+}
+.list_contents > ul{
+	margin: 0;
+	padding: 0;
+}
+.list_contents > ul > li{
+	list-style: none;
+	float: left;
+	text-align: center;
+	overflow: hidden;
+	box-sizing: border-box;
+	padding: 1px;
+}
+.list_contents > ul > li.btn_list{
+	width: 25%;
+}
+.btn_list > *{
+	display: block;
+	width: 100%;
+	padding: 0.5em;
+	box-sizing: border-box;
+	font-weight: bold;
+	font-size: 1em;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	background-color: #EAEAEA;
+}
+.tablLink:hover{
+	background-color:#D1D1D1;
+}
+/* 삭제버튼 */
+.del_btn{
+	margin-top: 0.5em;
+	text-align: right;
+}
+/* 알림 */
+.notice_list ul> li a{
+	text-decoration: none;
+	font-weight:bold;
+	color: black;
+}
+.notice_list ul> li a:hover{
+	color:orange;
+}
+/* 목록 */
+.btn_container{
+	text-align:center;
+
+}
+.btn_container a{
+	text-decoration:none;
+}
+/* 목록 탭 */
+.btn_container{
+	border-bottom: solid 1px #CCC;
+	margin: 0.5em 0;
+}
+
+
+.btn_container:after{
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.btn_container .tab_sort{
+	display: block;
+	width: 20%;
+	height: 1.75em;
+	line-height: 1.75em;
+	font-size: 1.25em;
+	font-weight: bold;
+	text-align: center;
+	float: left;
+	color: #000;
+}
+
+.tab_sort > a{
+	display: block;
+	width: 100%;
+	height: 100%;
+	text-decoration: none;
+	color: #000;
+	border: solid 1px #CCC;
+	border-bottom: none;
+	/* border-top-left-radius: 0.25em;
+	border-top-right-radius: 0.25em; */
+	box-sizing: border-box;
+}
+
+.btn_container .tab_auction.tab_sel
+, .btn_container .tab_auction.tab_sort:hover a{
+	border: none;
+	background-color: #405D27;
+	color: #FFF;
+}
+.btn_container .tab_pick.tab_sel
+, .btn_container .tab_pick.tab_sort:hover a{
+	border: none;
+	background-color: #d8db00;
+	color: #FFF;
+}
+.btn_container .tab_saja.tab_sel
+, .btn_container .tab_saja.tab_sort:hover a{
+	background-color: #EE6B28;
+	color: #FFF;
+}
+
+.btn_container .tab_panda.tab_sel
+, .btn_container .tab_panda.tab_sort:hover a{
+	background-color: #454F59;
+	color: #FFF;
+}
+
+/* 모바일 */
+@media screen and (max-width: 450px){
+	.myinfo {
+		width: 100%;
+		flex-direction: column;
+		box-sizing: border-box;
+	}
+
+	.myinfo_list {
+		width: 100%;
+		display: flex;
+	}
+
+	.mynotice_list {
+		width: 100%;
+		margin: 0;
+		border-left: 0;
+		border-top: 5px solid #EAEAEA;
+	}
+
+	.mynotice_list h3 {
+		margin: 0.5em 0;
+	}
+}

@@ -1,0 +1,134 @@
+html, body{
+	margin : 0;
+	padding : 0;
+	height: 100%;
+}
+/* 목록 본문(그리드) */
+.list_contents .list_grid{
+	overflow: auto;
+	width: 100%;
+	margin-top: 0.75em;
+}
+
+.table_contents .list_grid_count{
+	font-size: 0.9em;
+	text-align:left;
+}
+/* 그리드 목록 리스트 */
+.list_grid > ul{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+
+.list_grid > ul:after{
+	content: "";
+	clear: both;
+}
+
+.list_grid > ul > li.grid_item {
+	float: left;
+	display: block;
+	position: relative;
+	width: 25%;
+	padding-bottom: 25%;
+}
+
+.list_grid li.grid_item > a {
+	display: block;
+	position : absolute;
+	top: 5%;
+	left: 5%;
+	bottom: 5%;
+	right: 5%;
+	text-decoration: none;
+	color: #FFF;
+}
+
+/* grid list item */
+.list_grid li.grid_item .grid_item {
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+
+/* item 이미지 */
+.list_grid li.grid_item .grid_img {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+li.grid_item .grid_img img{
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+/* 이미지 오버레이 텍스트 */
+li.grid_item .grid_img_label{
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 2%;
+	font-size: 0.75em;
+	font-weight: bold;
+}
+
+/* 이미지 오버레이 텍스트(사자) */
+.label_saja{
+	background-color: #EE6B28;
+	color: #FFF;
+}
+
+/* 이미지 오버레이 텍스트(판다) */
+.label_panda{
+	background-color: #454F59;
+	color: #FFF;
+}
+/* 이미지 오버레이 텍스트(경매) */
+.label_auction{
+	background-color: #405D27;
+	color: #FFF;
+}
+/* 이미지 오버레이 텍스트(찜) */
+.label_pick{
+	background-color: #d8db00;
+	color: #FFF;
+}
+
+/* item 설명 */
+li.grid_item .grid_label{
+	width: 90%;
+	padding: 5%;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0.35);
+}
+
+/* 제목 */
+li.grid_item .grid_label .grid_title{
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	text-align: left;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+/* 가격 */
+li.grid_item .grid_label .grid_balance{
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	text-align: right;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
