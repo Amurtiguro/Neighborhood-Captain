@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ijw.mypage.dao.MypageMapper">
+	
+	<!-- 회원 조회. -->
+	<select id="myInfo" parameterType="memberVO" resultType="memberVO">
+		SELECT 
+			 A.MNUM AS MNUM --회원번호.
+			,A.MID  AS MID --회원아이디.
+	        ,A.MPW  AS MPW --회원비밀번호.
+	        ,A.MNAME  AS MNAME --회원이름.
+	        ,A.MPHONE AS MPHONE --회원전화번호.
+	        ,A.MADDR0 AS MADDR0 --우편번호.
+	        ,A.MADDR1  AS MADDR1 --주소.
+	        ,A.MADDR2  AS MADDR2 --상세주소.
+	        ,A.MEMAIL  AS MEMAIL --이메일.
+	        ,TO_CHAR(TO_DATE(A.MREGDATE), 'YY/MM/DD') AS MREGDATE --회원등록일.
+	        ,TO_CHAR(TO_DATE(A.MINDATE), 'YY/MM/DD')  AS MINDATE --데이터등록일.
+	        ,TO_CHAR(TO_DATE(A.MUPDATE), 'YY/MM/DD')  AS MUPDATE --데이터수정일.
+	        ,A.MADMIN  AS MADMIN --관리자여부. 
+		FROM
+		         MEMBER_LIST A
+		WHERE
+		         A.MNUM=#{mnum} --회원번호.
+	</select>
+	<!-- 회원 수정. -->
+	<update id="myInfoUpdate" parameterType="memberVO">
+		UPDATE
+		        MEMBER_LIST
+		SET        
+		         MPW=#{mpw} --회원비밀번호.
+		        ,MNAME=#{mname} --회원이름.  
+		        ,MPHONE=#{mphone} --회원전화번호.
+		        ,MADDR0=#{maddr0} --우편번호.
+		        ,MADDR1=#{maddr1} --주소.
+		        ,MADDR2=#{maddr2} --상세주소. 
+		        ,MEMAIL=#{memail} --이메일.  
+		        ,MUPDATE=SYSDATE --데이터수정일.
+		WHERE
+		        MNUM=#{mnum} --회원번호.
+	</update>
+	<!-- 회원 히스토리 추가. -->
+	<insert id="hmemInsert" parameterType="memberVO">
+		INSERT INTO HMEMBER_LIST(
+		          HMNUM --회원번호.
+		         ,HMID --아이디.
+		         ,HMPW --비밀번호.
+		         ,HMNAME --이름.
+		         ,HMPHONE --핸드폰번호.
+		         ,HMADDR0 --우편번호.
+		         ,HMADDR1 --주소1.
+		         ,HMADDR2 --주소2.
+		         ,HMEMAIL --이메일.
+		         ,HMDELYN --삭제여부.
+		         ,HMREGDATE --회원등록일.
+		         ,HMINDATE --데이터등록일.
+		         ,HMUPDATE --데이터수정일.
+		         ,HMADMIN --관리자여부.
+		)VALUES(
+		          #{mnum} --회원번호.
+		         ,#{mid} --아이디.
+		         ,#{mpw} --비밀번호.
+		         ,#{mname} --이름.
+		         ,#{mphone} --핸드폰번호.
+		         ,#{maddr0} --우편번호.
+		         ,#{maddr1} --주소1.
+		         ,#{maddr2} --주소2.
+		         ,#{memail} --이메일.
+		         ,'N' --삭제여부.
+		         ,TO_DATE(#{mregdate}, 'YY/MM/DD') --회원등록일.
+		         ,TO_DATE(#{mindate}, 'YY/MM/DD') --데이터등록일.
+		         ,SYSDATE --데이터수정일.
+		         ,'N' --관리자여부.
+		)
+	</insert>
+	<!-- 회원 탈퇴. -->
+	<update id="myInfoDelete" parameterType="memberVO">
+		UPDATE
+		        MEMBER_LIST
+		SET        
+		         MDELYN='Y' --삭제여부.
+		        ,MUPDATE =SYSDATE --데이터수정일.
+		WHERE
+		        MNUM=#{mnum} --회원번호.
+	</update>	
+	
+	<!--  경매목록 조회. -->
+	<select id="myAuctionSALL" parameterType="auvo" resultType="auvo">
+		SELECT *
+		FROM(
+				SELECT 
+					     A.MNUM AS MNUM -- 회원번호.
+					    ,A.CGNUM AS CGNUM -- 글 카테고리
+					    ,A.ANUM AS ANUM  -- 글번호.
+					    ,A.ASORT AS ASORT  -- 구분.
+					    ,A.ATITLE AS ATITLE  -- 글제목.
+					    ,A.ALOC AS ALOC  -- 거래지역.
+					    ,A.APHOTO AS APHOTO  -- 글 사진.
+					    ,TO_CHAR(A.APRICEMIN,'FM9,999,999,999') AS APRICEMIN  -- 최소금액.
+					    ,A.AENDTIME AS AENDTIME  -- 시간.
+					    ,A.ACONTENTS AS ACONTENTS  -- 글내용.
+					    ,A.ASTATUS AS ASTATUS  -- 상태.
+					    ,A.ADELYN AS ADELYN  -- 글 삭제여부.
+					    ,TO_CHAR(TO_DATE(A.AREGDATE), 'YYYY/MM/DD') AS AREGDATE  -- 글 등록일.
+					    ,TO_CHAR(TO_DATE(A.AUPDATE), 'YYYY/MM/DD') AS AUPDATE   -- 글 수정일.
+			            ,CEIL(ROW_NUMBER() OVER(ORDER BY A.ANUM DESC) /  #{pagesize} ) AS CURPAGE 
+			            ,COUNT(A.ANUM) OVER() AS TOTALCOUNT --총 데이터 수
+			            ,NVL(NULL,#{pagesize}) AS PAGESIZE
+			  			,NVL(NULL, #{groupsize}) AS GROUPSIZE			    
+				FROM 
+				     AUCTION_GOODS A
+				WHERE 
+					 A.MNUM = #{mnum} -- 회원번호.
+				AND 
+					 A.ADELYN='N' -- 삭제여부.
+			  <if test="dateFrom!=null and dateTo!=null and dateFrom!=''and dateTo!=''">
+					<![CDATA[ 
+						AND (
+						        TO_CHAR(TO_DATE(AREGDATE,'YY/MM/DD'),'YY/MM/DD')>=TO_CHAR(TO_DATE(#{dateFrom},'YY/MM/DD'),'YY/MM/DD')
+						    AND TO_CHAR(TO_DATE(AREGDATE,'YY/MM/DD'),'YY/MM/DD')<=TO_CHAR(TO_DATE(#{dateTo},'YY/MM/DD'),'YY/MM/DD') )
+					]]>
+			  </if>
+				ORDER BY A.ANUM DESC
+		)
+		WHERE CURPAGE = #{curpage}
+	</select>
+	
+	<!-- 경매 상세페이지 조회. -->
+	<select id="selectAuction" parameterType="auvo" resultType="auvo">
+		SELECT
+		         A.ANUM AS ANUM--일반상품번호.
+		        ,B.CGNUM AS CGNUM--카테고리 코드.
+		        ,A.ATITLE AS ATITLE--제목.
+		        ,A.APHOTO AS APHOTO--사진.
+		        ,TO_CHAR(A.APRICEMIN,'FM9,999,999,999') AS APRICEMIN--시작가.
+		FROM
+		         AUCTION_GOODS A, CATEGORY_LIST B
+		WHERE
+		         A.CGNUM = B.CGNUM
+		AND
+		         A.ANUM=#{anum} --일반상품번호.
+	</select>
+	<!--  경매 목록 삭제. -->
+	<update id="myAuctionDel" parameterType="auvo">
+		UPDATE   
+		         AUCTION_GOODS A
+		SET
+		         A.ADELYN='Y' --삭제여부.
+		WHERE
+		         A.ANUM=#{anum} --일반상품번호.
+	</update>
+	<!-- 구매 판매 조회.(구분을 통해 조회) -->
+	<select id="myGeneralSALL" parameterType="gvo" resultType="gvo">
+		SELECT * 
+		FROM(
+				SELECT
+				     A.MNUM AS MNUM --회원번호.
+				    ,A.CGNUM AS CGNUM --카테코리번호.
+				    ,A.GNUM AS GNUM --일반상품번호.
+				    ,A.GSORT AS GSORT --구분.
+				    ,A.GTITLE AS GTITLE --제목.
+				    ,A.GLOC AS GLOC --거래지역.
+				    ,A.GPHOTO AS GPHOTO --사진.
+				    ,TO_CHAR(A.GPRICE,'FM9,999,999,999') AS GPRICE --리사이징사진.
+				    ,A.GCONTENTS AS GCONTENTS --내용.
+				    ,A.GSTATUS AS GSTATUS --상태.
+				    ,A.GDELYN AS GDELYN --삭제여부.
+				    ,TO_CHAR(TO_DATE(A.GREGDATE), 'YYYY/MM/DD') AS GREGDATE --등록일.
+				    ,TO_CHAR(TO_DATE(A.GUPDATE), 'YYYY/MM/DD') AS GUPDATE --수정일.
+		            ,CEIL(ROW_NUMBER() OVER(ORDER BY A.GNUM DESC) /  #{pagesize} ) AS CURPAGE 
+		            ,COUNT(A.GNUM) OVER() AS TOTALCOUNT --총 데이터 수
+		            ,NVL(NULL,#{pagesize}) AS PAGESIZE
+		  			,NVL(NULL, #{groupsize}) AS GROUPSIZE
+				FROM 
+				     GENERAL_GOODS A	
+				WHERE
+				     A.MNUM=#{mnum} --회원번호.
+				AND 
+					 A.GSORT=#{gsort} --구분.
+				AND
+					 A.GDELYN='N' --삭제여부.
+				 <if test="dateFrom!=null and dateTo!=null and dateFrom!=''and dateTo!=''">
+					<![CDATA[ 
+					AND (
+					        TO_CHAR(TO_DATE(GREGDATE,'YY/MM/DD'),'YY/MM/DD')>=TO_CHAR(TO_DATE(#{dateFrom},'YY/MM/DD'),'YY/MM/DD')
+					    AND TO_CHAR(TO_DATE(GREGDATE,'YY/MM/DD'),'YY/MM/DD')<=TO_CHAR(TO_DATE(#{dateTo},'YY/MM/DD'),'YY/MM/DD') )
+					]]>
+				 </if>					 
+				ORDER BY GNUM DESC
+		)
+		WHERE CURPAGE = #{curpage}
+	</select>
+	<!-- 구매, 판매 목록 삭제. -->
+	<update id="myGeneralDel" parameterType="gvo">
+		UPDATE
+		         GENERAL_GOODS A
+		SET
+		         A.GDELYN='Y' --삭제여부.
+		WHERE
+	         A.GNUM=#{gnum} --일반상품번호.
+	</update>
+	<!-- 알림목록 조회. -->
+	<select id="noticeSALL" parameterType="novo" resultType="novo">
+		SELECT A.*
+		FROM
+			(SELECT
+		         A.NNUM AS NNUM-- 알림번호.
+	            ,A.NMNUM AS NMNUM--알림회원번호.
+	            ,A.NSORT AS NSORT-- 알림구분.
+	            ,A.NINFO  AS NINFO-- 알림정보.
+	            ,A.NURL AS NURL-- 해당url.
+	            ,A.NDELYN AS NDELYN-- 삭제여부.
+	     		,TO_CHAR(TO_DATE(A.NSENDDATE), 'YYYY/MM/DD') AS NSENDDATE --알림보낸날.
+	            ,A.MNUM AS MNUM-- 회원번호.
+	            ,B.MID AS MID
+			FROM
+			     NOTICE_LIST A, MEMBER_LIST B
+			WHERE
+			     A.NMNUM=B.MNUM
+			AND
+	        	 A.NDELYN='N'
+	        AND
+			     A.MNUM = #{mnum} --회원번호.
+	    	ORDER BY NNUM DESC
+			) A
+		WHERE
+			<![CDATA[ROWNUM<=10]]>	
+	</select>
+	
+
+	<!-- 찜하기 목록 조회. -->
+	<select id="myPickSALL" parameterType="mypickVO" resultType="mypickVO">
+		SELECT *
+		FROM(
+				SELECT
+				     A.MNUM AS MNUM
+				    ,A.PNUM AS PNUM
+				    ,TO_CHAR(TO_DATE(A.PDATE), 'YYYY/MM/DD') AS PDATE --찜한날짜.
+				    ,A.PDELYN AS PDELYN
+                    ,CEIL(ROW_NUMBER() OVER(ORDER BY A.PNUM DESC) /  #{pagesize} ) AS CURPAGE 
+                    ,COUNT(A.PNUM) OVER() AS TOTALCOUNT --총 데이터 수
+                    ,NVL(NULL,#{pagesize}) AS PAGESIZE
+   				    ,NVL(NULL, #{groupsize}) AS GROUPSIZE
+				    ,B.GNUM AS GNUM
+				    ,B.GSORT AS GSORT
+				    ,B.GTITLE AS GTITLE
+				    ,B.GPHOTO AS GPHOTO
+				    ,TO_CHAR(B.GPRICE,'FM9,999,999,999') AS GPRICE
+				    ,B.GLOC AS GLOC
+				FROM 
+				     PICK_LIST A, GENERAL_GOODS B
+				WHERE
+				     A.GNUM = B.GNUM
+				AND
+				     A.PDELYN='N'
+		     	 <if test="dateFrom!=null and dateTo!=null and dateFrom!=''and dateTo!=''">
+					<![CDATA[ 
+					AND (
+					        TO_CHAR(TO_DATE(B.GREGDATE,'YY/MM/DD'),'YY/MM/DD')>=TO_CHAR(TO_DATE(#{dateFrom},'YY/MM/DD'),'YY/MM/DD')
+					    AND TO_CHAR(TO_DATE(B.GREGDATE,'YY/MM/DD'),'YY/MM/DD')<=TO_CHAR(TO_DATE(#{dateTo},'YY/MM/DD'),'YY/MM/DD') )
+					]]>
+				 </if>					 
+				AND
+				     A.MNUM = #{mnum}--회원번호.
+				ORDER BY PDATE DESC
+		)
+		WHERE CURPAGE = #{curpage}
+	</select>
+	
+	<!-- 찜하기 추가. -->
+	<insert id="pickInsert" parameterType="mypickVO">
+		<selectKey keyProperty="pnum" resultType="String" order="BEFORE">
+			SELECT /*+  SYS_C004000*/ 
+				'P' || TO_CHAR(SYSDATE, 'YYYYMMDD') || LPAD(NVL(MAX(SUBSTR(A.PNUM, -4)), 0) + 1, 4, '0')
+			FROM PICK_LIST A
+			WHERE SUBSTR(PNUM, 2, 8) = TO_CHAR(SYSDATE, 'YYYYMMDD')
+		</selectKey>
+		INSERT INTO PICK_LIST(
+		         MNUM --회원번호.
+		        ,GNUM --일반상품번호.
+		        ,PNUM --찜번호.
+		        ,PDATE --찜한날짜.
+		        ,PDELYN --삭제여부.
+		)VALUES(
+		         #{mnum} --회원번호.
+		        ,#{gnum} --일반상품번호.
+		        ,#{pnum} --찜번호.
+		        ,SYSDATE --찜한날짜.
+		        ,'N' --삭제여부.
+		)
+	</insert>
+	<!-- 찜하기 삭제. -->
+	<update id="myPickDel" parameterType="mypickVO">
+		UPDATE 
+		         PICK_LIST
+		SET
+		         PDELYN='Y' --삭제여부.
+		WHERE
+		         PNUM=#{pnum} --찜번호.
+	</update>
+	<!--  찜하기에서 상세페이지로 이동. -->
+	<select id="selectGeneral" parameterType="gvo" resultType="gvo">
+		SELECT
+		         A.GNUM AS GNUM --일반상품번호.
+		        ,A.GTITLE AS GTITLE --제목.
+		        ,A.CGNUM AS CGNUM --카테고리번호.
+		        ,A.GLOC AS GLOC --거래지역.
+		        ,TO_CHAR(A.GPRICE,'FM9,999,999,999') AS GPRICE --가격.
+		        ,A.GCONTENTS AS GCONTENTS --내용.
+		FROM    
+		         GENERAL_GOODS A
+		WHERE
+		         A.GNUM=#{gnum}	--일반상품번호.
+	</select>
+
+</mapper>	

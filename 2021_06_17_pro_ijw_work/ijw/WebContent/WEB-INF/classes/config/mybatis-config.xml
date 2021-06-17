@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		
+		<typeAlias type="com.ijw.general.vo.GeneralVO" alias="gvo"/>
+		<typeAlias type="com.ijw.auction.vo.AuctionVO" alias="auvo" />
+		<typeAlias type="com.ijw.bid.vo.BidVO" alias="bivo" />
+		<typeAlias type="com.ijw.notice.vo.NoticeVO" alias="novo" />
+		<typeAlias type="com.ijw.reg.vo.RegVO" alias="regvo"/>
+		<typeAlias type="com.ijw.category.vo.CategoryVO" alias="categoryvo"/>
+		<typeAlias type="com.ijw.comment.vo.CommentVO" alias="commentvo"/>
+		<typeAlias type="com.ijw.general.vo.GeneralCountVO" alias="generalcountvo"/> 	
+		<typeAlias type="com.ijw.member.vo.MemberVO" alias="memberVO"/>
+		<typeAlias type="com.ijw.member.vo.ChartVO" alias="chartVO"/>
+		<typeAlias type="com.ijw.deal.vo.DealVO" alias="dealVO"/>
+		<typeAlias type="com.ijw.mypage.vo.MyPickVO" alias="mypickVO"/>
+	</typeAliases>
+</configuration>

@@ -1,0 +1,21 @@
+@charset "UTF-8";
+.joinform{
+	align-content: center;
+	margin: auto;
+	width: 450px;
+}
+.chk{
+}
+.btn_insert{
+	text-align: right;
+	align-content: ;
+	
+}
+.insert_div{
+	align-content: center;
+	text-align: center;
+	
+}
+.adminSelectTable{
+	width: 100%;
+}
